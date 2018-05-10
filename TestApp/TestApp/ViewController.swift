@@ -10,24 +10,25 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    var total = 3
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var hitMe: UIButton!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.transform.d = -1
         collectionView.dataSource = self
+        collectionView.delegate = self
     }
 
-    var total = 3
     @IBAction func hit(_ sender: Any) {
         total += 1
         UIView.performWithoutAnimation {
             collectionView.performBatchUpdates({
                 collectionView.insertItems(at: [
-                    IndexPath(item: total-1, section: 0),
-                    IndexPath(item: total-2, section: 0)
+                    IndexPath(item: total - 1, section: 0),
+                    IndexPath(item: total - 2, section: 0)
                 ])
-                collectionView.deleteItems(at: [IndexPath(item: total-2, section: 0)])
+                collectionView.deleteItems(at: [IndexPath(item: total - 2, section: 0)])
                 collectionView.reloadItems(at: [IndexPath(item: 0, section: 0)])
             }, completion: nil)
         }
@@ -46,8 +47,16 @@ extension ViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        (cell.contentView.subviews[0] as! UILabel).text = "\(indexPath.item) Hi Hello Inverted!"
+        let label = cell.contentView.subviews[0] as! UILabel
+        label.text = "\(indexPath.item) - Hi Hello Inverted!"
+        label.layer.cornerRadius = 6
         cell.transform.d = -1
         return cell
+    }
+}
+
+extension ViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
     }
 }
