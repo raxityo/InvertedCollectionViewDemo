@@ -50,7 +50,6 @@ extension ViewController: UICollectionViewDataSource {
         let label = cell.contentView.subviews[0] as! UILabel
         label.text = "\(indexPath.item) - Hi Hello Inverted!"
         label.layer.cornerRadius = 6
-        cell.transform.d = -1
         return cell
     }
 }

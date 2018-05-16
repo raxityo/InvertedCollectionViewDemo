@@ -8,9 +8,14 @@
 
 import UIKit
 class CustomCollectionViewFlowLayout: UICollectionViewFlowLayout {
-    override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        let attributes = super.initialLayoutAttributesForAppearingItem(at: itemIndexPath)
-        attributes?.alpha = 1
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        guard let attributes = super.layoutAttributesForElements(in: rect) else {
+            return nil
+        }
+        attributes.forEach {
+            $0.alpha = 1
+            $0.transform.d = -1
+        }
         return attributes
     }
 }
